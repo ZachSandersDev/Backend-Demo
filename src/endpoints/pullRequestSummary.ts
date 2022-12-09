@@ -1,21 +1,40 @@
 import { Application, Request, Response } from "express";
-import { getPullRequestList } from "../github/api";
 
-export function registerPullRequestEndpoints(app: Application) {
+import getPullRequestSummary from "../github/getPullRequestSummary";
+
+export function registerPullRequestEndpoints(app: Application): void {
   app.get("/pulls/summary/:repoURL", handlePullRequestSummary);
 }
 
-export async function handlePullRequestSummary(req: Request, res: Response) {
-  const repoURL = new URL(req.params.repoURL);
+export async function handlePullRequestSummary(
+  req: Request,
+  res: Response
+): Promise<void> {
+  let owner: string, repo: string;
 
-  const [owner, repo] = repoURL.pathname.slice(1).split("/");
-  await getPullRequestSummary(owner, repo);
+  try {
+    const repoURL = new URL(req.params.repoURL);
 
-  res.send("ok");
-}
+    // Remove the leading slash and split the url to get the owner and repo
+    [owner, repo] = repoURL.pathname.slice(1).split("/");
+    if (!owner || !repo) {
+      throw "invalid url";
+    }
+  } catch (err) {
+    res.status(400).send("Supplied Github URL was invalid");
+    return;
+  }
 
-export async function getPullRequestSummary(owner: string, repo: string) {
-  const pullRequests = await getPullRequestList(owner, repo);
+  try {
+    const summary = await getPullRequestSummary(owner, repo);
+    res.json(summary);
+  } catch (err) {
+    res.status(400);
 
-  console.log(pullRequests)
+    if (err instanceof Error) {
+      res.send(err.message);
+    } else {
+      res.send(`Could not get pull request summary for ${req.params.repoURL}`);
+    }
+  }
 }
