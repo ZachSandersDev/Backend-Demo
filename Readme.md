@@ -11,7 +11,7 @@ GET: /pulls/summary/{github repo url}
 
 ### Params
 
-- `{github repo url}`: A url for a GitHub repository 
+- `{github repo url}`: A URL for a GitHub repository 
   - Something like: 
   ```
   https://github.com/ZachSandersDev/Backend-Demo
@@ -43,3 +43,8 @@ interface PullRequestSummary {
   - `commit_count` is the number of commits in the pull request
 - If there is any kind of error, the service assumes it's user error and will return a `400` status code. In this case, the body of the request will contain an error message as plaintext.
 
+# Env
+
+This service also requires a GitHub Access Token to operate. This token should be loaded as an environment variable `GITHUB_ACCESS_TOKEN`.
+- This can be set through an `.env.local` file and loaded using `dotenv` with the command `npm run startLocalEnv`.
+- Or, this can be set through some other means, and the server can be started through the default `npm start` command.

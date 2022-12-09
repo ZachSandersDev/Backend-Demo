@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts",
+    "startLocalEnv": "ts-node -r dotenv/config index.ts dotenv_config_path=.env.local",
     "dev": "tsnd -r dotenv/config index.ts dotenv_config_path=.env.local",
     "test": "jest",
     "lint": "eslint --fix **/*.ts"
