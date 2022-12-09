@@ -1,6 +1,8 @@
 import getCommitCount from "./getCommitCount";
 import getPullRequestList from "./getPullRequestList";
 
+import type { PullRequestSummary } from "./githubTypes";
+
 export default async function getPullRequestSummary(
   owner: string,
   repo: string

@@ -1,5 +1,7 @@
 import { fetchWithGHCredentials } from "./utils";
 
+import type { CompareResponse } from "./githubTypes";
+
 export default async function getCommitCount(
   owner: string,
   repo: string,

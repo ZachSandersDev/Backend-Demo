@@ -1,4 +1,5 @@
 import { fetchWithGHCredentials } from "./utils";
+import type { PullRequest } from "./githubTypes";
 
 export default async function getPullRequestList(
   owner: string,
